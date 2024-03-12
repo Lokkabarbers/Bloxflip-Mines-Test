@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mines Game</title>
+    <style>
+        .mines_minesGame__6Bltb {
+            display: grid;
+            grid-template-columns: repeat(5, 50px); /* 5 columns */
+            grid-template-rows: repeat(5, 50px); /* 5 rows */
+            gap: 5px; /* Gap between cells */
+        }
+
+        .mines_minesGameItem__S2ytQ {
+            width: 50px;
+            height: 50px;
+            background-color: #ccc; /* Default color */
+            border: 1px solid #999; /* Border */
+            font-size: 14px; /* Adjust font size */
+            cursor: pointer;
+        }
+
+        .balance {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .balance p {
+            margin: 0;
+        }
+
+        .deposit-balance {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .deposit-balance input {
+            flex: 1;
+            margin-right: 10px;
+            padding: 5px;
+        }
+
+        .deposit-balance button {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .cashout-button {
+            margin-top: 10px;
+            padding: 8px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+.mines_minesGameItem__S2ytQ.active-mine {
+    background-color: #ccc; /* Change color to match safe spots */
+    color: #fff; /* Text color */
+}
+
+        .mines_minesGameItem__S2ytQ.safe {
+            background-color: #4CAF50; /* Change color for safe spots */
+            color: #fff; /* Text color */
+        }
+        
+        .deposit-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Ensure the deposit UI is in front of everything */
+        }
+
+        .deposit-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .deposit-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .deposit-option {
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .deposit-option:hover {
+            background-color: #f1f1f1;
+        }
+
+        .confirmation-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1001; /* Ensure the confirmation popup is in front of everything */
+        }
+
+        .confirmation-popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-popup button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .confirmation-popup button.cancel {
+            background-color: #f44336;
+            margin-right: 10px;
+        }
+
+        .thank-you-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1001; /* Ensure the thank you popup is in front of everything */
+        }
+
+        .thank-you-popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .thank-you-popup .checkmark {
+            text-align: center;
+            font-size: 48px;
+            color: #4CAF50;
+        }
+
+        .thank-you-popup .close-button {
+            display: block;
+            margin: 0 auto;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+                .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-content h2 {
+            margin-top: 0;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        
+                .withdraw-button {
+            padding: 8px 20px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Mines Game</h1>
+
+<button class="deposit-plus" onclick="toggleDepositUI()">Deposit +</button>
+<button class="withdraw-button" onclick="withdraw()">Withdraw -</button>
+
+<div class="balance">
+    <p>Balance: <span id="balance">$100.00</span></p>
+</div>
+
+<div id="depositUI" style="display: none;">
+    <div class="deposit-options">
+        <div class="deposit-option" onclick="showConfirmationPopup(12.99, 1000)">
+            <h3>$12.99</h3>
+            <p>1000 in-game currency</p>
+        </div>
+        <div class="deposit-option" onclick="showConfirmationPopup(49.99, 5000)">
+            <h3>$49.99</h3>
+            <p>5000 in-game currency</p>
+        </div>
+        <div class="deposit-option" onclick="showConfirmationPopup(85.53, 10000)">
+            <h3>$85.53</h3>
+            <p>10000 in-game currency</p>
+        </div>
+        <div class="deposit-option" onclick="showConfirmationPopup(249.99, 30000)">
+            <h3>$249.99</h3>
+            <p>30000 in-game currency</p>
+        </div>
+        <div class="deposit-option" onclick="showConfirmationPopup(449.99, 50000)">
+            <h3>$449.99</h3>
+            <p>50000 in-game currency</p>
+        </div>
+    </div>
+</div>
+
+<div class="total-withdrawn">
+    <p>Total Withdrawn: $<span id="totalWithdrawn">0.00</span></p>
+</div>
+
+<div id="confirmationPopup" class="popup-container">
+    <div class="popup-content">
+        <span class="close" onclick="hideConfirmationPopup()">&times;</span>
+        <h2>Are you sure?</h2>
+        <button onclick="confirmPurchase()">Yes</button>
+        <button onclick="hideConfirmationPopup()">No</button>
+    </div>
+</div>
+
+<!-- Thank You Popup -->
+<div id="thankYouPopup" class="popup-container">
+    <div class="popup-content">
+        <span class="close" onclick="hideThankYouPopup()">&times;</span>
+        <h2>Thank you for your purchase</h2>
+        <img src="checkmark.png" alt="Checkmark">
+        <button onclick="hideThankYouPopup()">Close</button>
+    </div>
+</div>
+
+<div class="game-layout_gameLayout__bgIOR">
+    <div class="game-layout_gameLayoutColumn__q01vS game-layout_gameLayoutColumnLeft__55fuZ" style="order: initial;">
+        <div class="gameBlock gameBet" style="animation: 0.3s ease 0s 1 normal none running bottomTop;">
+            <div class="gameBetTabs" style="display: flex; justify-content: space-between;">
+                <button class="button_button__dZRSb button_tab__RC45L button_isActive__tpT2u">Manual</button>
+                <div style="display: flex; gap: 1em; height: 80%;">
+                    <button class="button_button__dZRSb button_betOption__yOLYh"><svg fill="#8690bf" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 318.293 318.293" xml:space="preserve" style="height: 0.75em;"><path d="M159.148 0c-52.696 0-95.544 39.326-95.544 87.662h47.736c0-22.007 21.438-39.927 47.808-39.927 26.367 0 47.804 17.92 47.804 39.927v6.929c0 23.39-10.292 34.31-25.915 50.813-20.371 21.531-45.744 48.365-45.744 105.899h47.745c0-38.524 15.144-54.568 32.692-73.12 17.368-18.347 38.96-41.192 38.96-83.592v-6.929C254.689 39.326 211.845 0 159.148 0zM134.475 277.996h49.968v40.297h-49.968z"></path></svg></button>
+                    <button class="button_button__dZRSb button_betOption__yOLYh">Fairness</button>
+                    <button class="button_button__dZRSb button_betOption__yOLYh">History</button>
+                </div>
+            </div>
+            <div class="customInput gameBetInput">
+                <p class="text_text__fMaR4 text_labelsRegular__YFakN customInputLabel">Bet amount</p>
+                <div class="customInputInner">
+                    <input id="betAmountInput" class="input_input__N_xjH input_inputWithCurrency__8asLR" pattern="^-?[0-9]\d*\.?\d*$" value="0">
+                    <div class="customInputInnerButtons">
+                        <button class="button_button__dZRSb button_inputButton__B2DPv">1/2</button>
+                        <button class="button_button__dZRSb button_inputButton__B2DPv">2x</button>
+                        <button class="button_button__dZRSb button_inputButton__B2DPv">Max</button>
+                    </div>
+                </div>
+            </div>
+            <div class="customInput gameBetInput">
+                <p class="text_text__fMaR4 text_labelsRegular__YFakN customInputLabel">Mines</p>
+                <div class="customInputInner">
+                    <input id="mineCountInput" class="input_input__N_xjH" pattern="^-?[0-9]\d*\.?\d*$" value="3" disabled>
+                    <div class="customInputInnerButtons">
+                        <button class="button_button__dZRSb button_inputButton__B2DPv" onclick="setMineCount(1)">1</button>
+                        <button class="button_button__dZRSb button_inputButton__B2DPv" onclick="setMineCount(3)">3</button>
+                        <button class="button_button__dZRSb button_inputButton__B2DPv" onclick="setMineCount(5)">5</button>
+                        <button class="button_button__dZRSb button_inputButton__B2DPv" onclick="setMineCount(10)">10</button>
+                        <button class="button_button__dZRSb button_inputButton__B2DPv" onclick="setMineCount(20)">20</button>
+                    </div>
+                </div>
+            </div>
+            <div class="customInput gameBetInput">
+                <p class="text_text__fMaR4 text_labelsRegular__YFakN customInputLabel">Total earnings</p>
+                <div class="customInputInner">
+                    <input id="totalEarningsInput" class="input_input__N_xjH" disabled value="$0.00">
+                </div>
+            </div>
+            <button class="button_button__dZRSb button_primary__LXFHi gameBetSubmit mobileBottomMargin" onclick="startNewGame()">Start new game</button>
+            <button class="cashout-button" onclick="cashout()" disabled>Cashout</button>
+        </div>
+    </div>
+</div>
+
+<div class="game-layout_gameLayoutColumn__q01vS game-layout_gameLayoutColumnRight__oj_7g" style="order: -1;">
+    <div id="minesGame" class="mines_minesGame__6Bltb" style="animation: 0.5s ease 0s 1 normal none running bottomTop;"></div>
+</div>
+
+<script>
+    var mineCount = 3;
+    var betAmount = 0;
+    var totalEarnings = 0;
+    var balance = 100;
+    var gameDisabled = false;
+    var totalWithdrawn = 0;
+
+    function setMineCount(count) {
+        mineCount = count;
+        document.getElementById("mineCountInput").value = count;
+    }
+
+    function startNewGame() {
+        betAmount = parseFloat(document.getElementById("betAmountInput").value);
+        if (balance - betAmount < 0) {
+            alert("Insufficient balance!");
+            return;
+        }
+        balance -= betAmount;
+        document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+        totalEarnings = 0;
+        document.getElementById("totalEarningsInput").value = "$" + totalEarnings.toFixed(2);
+
+        var gameBoard = document.getElementById("minesGame");
+        gameBoard.innerHTML = "";
+
+        // Generate game board with mine buttons
+        var mineIndices = generateRandomMines();
+        for (var i = 0; i < 25; i++) {
+            var button = document.createElement("button");
+            button.className = "mines_minesGameItem__S2ytQ";
+            button.setAttribute("aria-label", "Mine " + (i + 1));
+            button.onclick = function() { revealMine(this); };
+            if (mineIndices.includes(i)) {
+                button.classList.add("active-mine");
+            }
+            gameBoard.appendChild(button);
+        }
+        document.querySelector('.cashout-button').disabled = false;
+        gameDisabled = false;
+
+        // Adjust multiplier based on mine count
+        var multiplier;
+        switch (mineCount) {
+            case 1:
+                multiplier = 0.102;
+                break;
+            case 3:
+                multiplier = 0.48;
+                break;
+            case 5:
+                multiplier = 0.96;
+                break;
+            case 10:
+                multiplier = 1.714;
+                break;
+            case 20:
+                multiplier = 4.98;
+                break;
+            default:
+                multiplier = 1.0;
+        }
+        totalEarningsMultiplier = multiplier;
+    }
+
+    function revealMine(button) {
+        if (button.innerText !== "" || gameDisabled) return; // If already clicked or game is disabled, return
+
+        var index = parseInt(button.dataset.index); // Get button index
+        if (button.classList.contains("active-mine")) {
+            button.innerText = "X";
+            button.style.backgroundColor = "red"; // Set background color to red for active mines
+            endGame();
+        } else {
+            button.innerText = "Safe";
+            button.classList.add("safe");
+            button.style.backgroundColor = "green"; // Set background color to green for safe spots
+            totalEarnings += betAmount * totalEarningsMultiplier; // Adjust earnings based on multiplier
+            document.getElementById("totalEarningsInput").value = "$" + totalEarnings.toFixed(2);
+        }
+    }
+
+    function endGame() {
+        gameDisabled = true;
+        document.querySelector('.cashout-button').disabled = true;
+
+        // Uncover all mines
+        var mineButtons = document.querySelectorAll('.mines_minesGameItem__S2ytQ');
+        mineButtons.forEach(function(button) {
+            if (button.classList.contains("active-mine")) {
+                button.innerText = "X";
+                button.style.backgroundColor = "red"; // Set background color to red for active mines
+            }
+        });
+    }
+    function withdraw() {
+        var withdrawAmount = parseFloat(prompt("Enter the amount you want to withdraw:"));
+        if (withdrawAmount > balance) {
+            alert("Withdrawal amount exceeds balance!");
+            return;
+        }
+        if (withdrawAmount <= 0 || isNaN(withdrawAmount)) {
+            alert("Invalid withdrawal amount!");
+            return;
+        }
+        
+        // Convert in-game currency to real dollars
+        var realDollars = withdrawAmount * 0.034; // Assuming conversion rate is 1:100
+
+        balance -= withdrawAmount;
+        totalWithdrawn += withdrawAmount; // Update total withdrawn
+        updateTotalWithdrawnUI(); // Update UI
+        alert("Withdrawal successful! $" + realDollars.toFixed(2) + " has been withdrawn from your balance.");
+        document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+    }
+    
+function updateTotalWithdrawnUI() {
+    // Convert total withdrawn in in-game currency to real dollars
+    var totalWithdrawnRealDollars = totalWithdrawn * 0.034; // Adjust the conversion rate as needed
+    document.getElementById("totalWithdrawn").innerText = "$" + totalWithdrawnRealDollars.toFixed(2);
+}
+
+    
+    function cashout() {
+        balance += totalEarnings;
+        document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+        totalEarnings = 0;
+        document.getElementById("totalEarningsInput").value = "$" + totalEarnings.toFixed(2);
+        endGame();
+    }
+
+    function toggleDepositUI() {
+        var depositUI = document.getElementById("depositUI");
+        depositUI.style.display = depositUI.style.display === "none" ? "block" : "none";
+    }
+
+
+
+    function generateRandomMines() {
+        var mineIndices = [];
+        while (mineIndices.length < mineCount) {
+            var index = Math.floor(Math.random() * 25);
+            if (!mineIndices.includes(index)) {
+                mineIndices.push(index);
+            }
+        }
+        return mineIndices;
+    }
+</script>
+
+<script>
+    function showConfirmationPopup(price, currencyAmount) {
+        var confirmationPopup = document.getElementById("confirmationPopup");
+        confirmationPopup.style.display = "block";
+        confirmationPopup.setAttribute("data-price", price);
+        confirmationPopup.setAttribute("data-currency-amount", currencyAmount);
+    }
+
+    function hideConfirmationPopup() {
+        document.getElementById("confirmationPopup").style.display = "none";
+    }
+
+function confirmPurchase() {
+    var price = parseFloat(document.getElementById("confirmationPopup").getAttribute("data-price"));
+    var currencyAmount = parseInt(document.getElementById("confirmationPopup").getAttribute("data-currency-amount"));
+    // Update global balance variable
+    balance += currencyAmount;
+    document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+    hideConfirmationPopup();
+    showThankYouPopup();
+}
+
+    function showThankYouPopup() {
+        document.getElementById("thankYouPopup").style.display = "block";
+    }
+
+    function hideThankYouPopup() {
+        document.getElementById("thankYouPopup").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
