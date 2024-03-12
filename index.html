@@ -454,7 +454,7 @@
         }
         
         // Convert in-game currency to real dollars
-        var realDollars = withdrawAmount * 0.00941; // Assuming conversion rate is 1:100
+        var realDollars = withdrawAmount * 0.00441; // Assuming conversion rate is 1:100
 
         balance -= withdrawAmount;
         totalWithdrawn += withdrawAmount; // Update total withdrawn
@@ -465,7 +465,7 @@
     
 function updateTotalWithdrawnUI() {
     // Convert total withdrawn in in-game currency to real dollars
-    var totalWithdrawnRealDollars = totalWithdrawn * 0.00941; // Adjust the conversion rate as needed
+    var totalWithdrawnRealDollars = totalWithdrawn * 0.00441; // Adjust the conversion rate as needed
     document.getElementById("totalWithdrawn").innerText = "$" + totalWithdrawnRealDollars.toFixed(2);
 }
 
