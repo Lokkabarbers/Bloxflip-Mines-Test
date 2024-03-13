@@ -385,26 +385,25 @@
         document.querySelector('.cashout-button').disabled = false;
         gameDisabled = false;
 
-        // Adjust multiplier based on mine count
         var multiplier;
         switch (mineCount) {
             case 1:
-                multiplier = 0.401;
+                multiplier = 1.03;
                 break;
             case 3:
-                multiplier = 0.71;
+                multiplier = 1.12;
                 break;
             case 5:
-                multiplier = 1.04;
+                multiplier = 1.24;
                 break;
             case 10:
-                multiplier = 1.714;
+                multiplier = 1.65;
                 break;
             case 20:
                 multiplier = 4.98;
                 break;
             case 24:
-                multiplier = 13.6;
+                multiplier = 24.54;
                 break;
             default:
                 multiplier = 1.0;
