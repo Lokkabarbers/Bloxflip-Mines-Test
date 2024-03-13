@@ -5,110 +5,210 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Gambling - Mines</title>
     <style>
-        .mines_minesGame__6Bltb {
-            display: grid;
-            grid-template-columns: repeat(5, 50px); /* 5 columns */
-            grid-template-rows: repeat(5, 50px); /* 5 rows */
-            gap: 5px; /* Gap between cells */
-        }
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-        .mines_minesGameItem__S2ytQ {
-            width: 50px;
-            height: 50px;
-            background-color: #ccc; /* Default color */
-            border: 1px solid #999; /* Border */
-            font-size: 14px; /* Adjust font size */
-            cursor: pointer;
-        }
-
-        .balance {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .balance p {
-            margin: 0;
-        }
-
-        .deposit-balance {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        .deposit-balance input {
-            flex: 1;
-            margin-right: 10px;
-            padding: 5px;
-        }
-
-        .deposit-balance button {
-            padding: 8px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .cashout-button {
-            margin-top: 10px;
-            padding: 8px 20px;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-.mines_minesGameItem__S2ytQ.active-mine {
-    background-color: #ccc; /* Change color to match safe spots */
-    color: #fff; /* Text color */
+/* Base styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* Light text */
+    margin: 0;
+    padding: 20px;
 }
 
-        .mines_minesGameItem__S2ytQ.safe {
-            background-color: #4CAF50; /* Change color for safe spots */
-            color: #fff; /* Text color */
-        }
-        
-        .deposit-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000; /* Ensure the deposit UI is in front of everything */
-        }
+h1 {
+    text-align: center;
+    color: #ffffff;
+}
 
-        .deposit-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+/* Neumorphism styles */
+.mines_minesGame__6Bltb {
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    grid-template-rows: repeat(5, 50px);
+    gap: 5px;
+    padding: 20px;
+}
 
-        .deposit-options {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
+.mines_minesGameItem__S2ytQ {
+    width: 50px;
+    height: 50px;
+    background: #232c33; /* Dark tile color */
+    border-radius: 12px;
+    box-shadow: 6px 6px 12px #0d1418,
+                -6px -6px 12px #38434f; /* Neumorphic effect */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-        .deposit-option {
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.mines_minesGameItem__S2ytQ:hover {
+    background: #2b353f;
+}
 
-        .deposit-option:hover {
-            background-color: #f1f1f1;
-        }
+.mines_minesGameItem__S2ytQ:active {
+    box-shadow: inset 6px 6px 12px #0d1418,
+                inset -6px -6px 12px #38434f; /* Pressed effect */
+}
+
+/* Improved button and input styles */
+.button_button__dZRSb {
+    background: linear-gradient(145deg, #2d3b45, #20282e);
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: 10px;
+    color: #fff;
+    box-shadow: 4px 4px 8px #0b1013,
+                -4px -4px 8px #37434d;
+    transition: all 0.3s ease;
+}
+
+.button_button__dZRSb:hover {
+    background: linear-gradient(145deg, #273238, #1c2428);
+}
+
+.input_input__N_xjH {
+    background: #232c33;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    color: #fff;
+}
+
+/* Balance and deposit styles */
+.balance, .deposit-balance, .total-withdrawn {
+    background: #1e262e;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 8px #0b1013,
+                -4px -4px 8px #37434d;
+    margin-bottom: 20px;
+}
+
+/* Popup styles */
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: #232c33;
+    border-radius: 20px;
+    box-shadow: 4px 4px 8px #0b1013,
+                -4px -4px 8px #37434d;
+padding: 40px;
+width: 90%;
+max-width: 400px;
+}
+
+.popup-content h2, .popup-content p {
+color: #fff;
+}
+
+.close {
+color: #fff;
+position: absolute;
+top: 20px;
+right: 20px;
+cursor: pointer;
+font-size: 1.5em;
+}
+
+.button_inputButton__B2DPv, .button_primary__LXFHi {
+background: linear-gradient(145deg, #323c47, #2b333d);
+color: #ffffff;
+padding: 10px;
+border: none;
+border-radius: 5px;
+box-shadow: 3px 3px 6px #0b1013,
+-3px -3px 6px #37434d;
+transition: all 0.2s ease;
+}
+
+.button_inputButton__B2DPv:active, .button_primary__LXFHi:active {
+box-shadow: inset 3px 3px 6px #0b1013,
+inset -3px -3px 6px #37434d;
+}
+
+/* Animation for the game tiles */
+@keyframes bottomTop {
+0% {
+opacity: 0;
+transform: translateY(50px);
+}
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+/* Add animation to the game elements */
+.game-layout_gameLayout__bgIOR, .game-layout_gameLayoutColumn__q01vS, .mines_minesGame__6Bltb {
+animation: bottomTop 0.5s ease-out forwards;
+}
+
+.popup-container {
+animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Enhance the visual feedback for game state */
+.mines_minesGameItem__S2ytQ.safe {
+background-color: #4CAF50;
+}
+
+.mines_minesGameItem__S2ytQ.active-mine {
+background-color: #f44336;
+}
+
+.cashout-button, .withdraw-button {
+background: #2196F3;
+}
+
+.cashout-button:disabled, .withdraw-button:disabled {
+background: #5c6f7c;
+cursor: not-allowed;
+}
+
+/* Miscellaneous Styles */
+.balance, .total-withdrawn {
+justify-content: space-between;
+align-items: center;
+}
+
+.deposit-option {
+transition: all 0.3s ease;
+cursor: pointer;
+}
+
+.deposit-option:hover {
+transform: translateY(-5px);
+box-shadow: 4px 4px 8px #0b1013,
+-4px -4px 8px #37434d;
+}
+
+/* Make the design responsive /
+@media (max-width: 768px) {
+.mines_minesGame__6Bltb {
+grid-template-columns: repeat(3, 50px); / Adjust columns for smaller screens */
+grid-template-rows: repeat(5, 50px);
+}
+}
+
+
 
         .confirmation-popup {
             display: none;
@@ -180,47 +280,127 @@
             cursor: pointer;
         }
         
-                .popup-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
+/* Overlay that covers the entire screen */
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    z-index: 1000;
+}
 
-        .popup-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
+/* Common style for all popup content boxes */
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2a2f45; /* Dark blue, similar to the theme */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Soft box shadow for depth */
+    color: white;
+    width: 90%; /* Responsive width */
+    max-width: 400px; /* Maximum width */
+    box-sizing: border-box; /* Include padding and border in the width */
+}
 
-        .popup-content h2 {
-            margin-top: 0;
-        }
+/* Heading inside popups */
+.popup-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-        }
-        
-                .withdraw-button {
-            padding: 8px 20px;
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+/* Buttons inside confirmation popup */
+.confirmation-popup button {
+    display: block;
+    margin: 0 auto 10px; /* Center button with margin at the bottom */
+    padding: 10px 20px;
+    background: linear-gradient(145deg, #5568fe, #394cba); /* Gradient button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Button shadow */
+    font-size: 16px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Hover and active states for confirmation buttons */
+.confirmation-popup button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.confirmation-popup button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Cancel button styling */
+.confirmation-popup button.cancel {
+    background: #f44336; /* Flat red color */
+}
+
+/* Thank you popup specific styles, can reuse .popup-content styles */
+.thank-you-popup .checkmark {
+    text-align: center;
+    font-size: 48px;
+    color: #4CAF50; /* Green checkmark */
+}
+
+.thank-you-popup .close-button {
+    background: linear-gradient(145deg, #4caf50, #357a38); /* Green gradient */
+}
+
+/* Close button common to all popups */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 1.5em;
+}
+
+/* Additional styling for mobile responsiveness, if needed */
+@media (max-width: 768px) {
+    .popup-content {
+        width: 80%;
+        padding: 10px;
+    }
+}
+
+
+/* Deposit button specific styles */
+.deposit-plus {
+    background-color: #08c; /* Blue color */
+    margin-right: 10px; /* Spacing between buttons */
+}
+
+.deposit-plus:hover {
+    background-color: #0077b5; /* Slightly darker blue on hover */
+    transform: scale(1.05); /* Slight increase in size */
+}
+
+/* Withdraw button specific styles */
+.withdraw-button {
+    background-color: #f80; /* Orange color */
+}
+
+.withdraw-button:hover {
+    background-color: #e57200; /* Slightly darker orange on hover */
+    transform: scale(1.05); /* Slight increase in size */
+}
+
+/* Styles for disabled buttons, in case you need them */
+.button:disabled {
+    background-color: #bbb; /* Grey color for disabled state */
+    cursor: not-allowed;
+}
 
     </style>
 </head>
@@ -228,8 +408,9 @@
 
 <h1>Mines Game</h1>
 
-<button class="deposit-plus" onclick="toggleDepositUI()">Deposit +</button>
-<button class="withdraw-button" onclick="withdraw()">Withdraw -</button>
+<button class="button deposit-plus" onclick="toggleDepositUI()">Deposit +</button>
+<button class="button withdraw-button" onclick="withdraw()">Withdraw -</button>
+
 
 <div class="balance">
     <p>Balance: <span id="balance">$100.00</span></p>
