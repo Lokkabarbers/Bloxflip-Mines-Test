@@ -601,9 +601,9 @@ grid-template-rows: repeat(5, 50px);
             button.style.backgroundColor = "red"; // Set background color to red for active mines
             endGame();
         } else {
-            button.innerText = "Safe";
+            button.innerText = "+1";
             button.classList.add("safe");
-            button.style.backgroundColor = "green"; // Set background color to green for safe spots
+            button.style.backgroundColor = "blue"; // Set background color to green for safe spots
             totalEarnings += betAmount * totalEarningsMultiplier; // Adjust earnings based on multiplier
             document.getElementById("totalEarningsInput").value = "$" + totalEarnings.toFixed(2);
         }
