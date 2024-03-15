@@ -611,16 +611,20 @@ function revealMine(button) {
         button.style.color = "white"; // Change text color to white
         button.style.backgroundColor = "red"; // Set background color to red for active mines
         button.style.fontWeight = "bold"; // Set font weight to bold
+        button.style.fontSize = "3em"; // Increase font size to fill the button
         endGame();
     } else {
         button.innerText = "+1";
         button.classList.add("safe");
-        button.style.color = "white";
         button.style.backgroundColor = "blue"; // Set background color to green for safe spots
+        button.style.color = "white"; // Change text color to white
+        button.style.fontWeight = "bold"; // Set font weight to bold
+        button.style.fontSize = "3em"; // Increase font size to fill the button
         totalEarnings += betAmount * totalEarningsMultiplier; // Adjust earnings based on multiplier
         document.getElementById("totalEarningsInput").value = "$" + totalEarnings.toFixed(2);
     }
 }
+
 
 
     function endGame() {
