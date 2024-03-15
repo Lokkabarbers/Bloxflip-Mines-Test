@@ -602,22 +602,26 @@ grid-template-rows: repeat(5, 50px);
         totalEarningsMultiplier = multiplier;
     }
 
-    function revealMine(button) {
-        if (button.innerText !== "" || gameDisabled) return; // If already clicked or game is disabled, return
+function revealMine(button) {
+    if (button.innerText !== "" || gameDisabled) return; // If already clicked or game is disabled, return
 
-        var index = parseInt(button.dataset.index); // Get button index
-        if (button.classList.contains("active-mine")) {
-            button.innerText = "X";
-            button.style.backgroundColor = "red"; // Set background color to red for active mines
-            endGame();
-        } else {
-            button.innerText = "+1";
-            button.classList.add("safe");
-            button.style.backgroundColor = "blue"; // Set background color to green for safe spots
-            totalEarnings += betAmount * totalEarningsMultiplier; // Adjust earnings based on multiplier
-            document.getElementById("totalEarningsInput").value = "$" + totalEarnings.toFixed(2);
-        }
+    var index = parseInt(button.dataset.index); // Get button index
+    if (button.classList.contains("active-mine")) {
+        button.innerText = "X";
+        button.style.color = "white"; // Change text color to white
+        button.style.backgroundColor = "red"; // Set background color to red for active mines
+        button.style.fontWeight = "bold"; // Set font weight to bold
+        endGame();
+    } else {
+        button.innerText = "+1";
+        button.classList.add("safe");
+        button.style.color = "white";
+        button.style.backgroundColor = "blue"; // Set background color to green for safe spots
+        totalEarnings += betAmount * totalEarningsMultiplier; // Adjust earnings based on multiplier
+        document.getElementById("totalEarningsInput").value = "$" + totalEarnings.toFixed(2);
     }
+}
+
 
     function endGame() {
         gameDisabled = true;
