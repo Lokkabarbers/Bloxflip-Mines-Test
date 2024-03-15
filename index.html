@@ -31,6 +31,10 @@ h1 {
     padding: 20px;
 }
 
+.mines_minesGameItem__S2ytQ.active-mine {
+    /* background-color: #f44336; */ /* Removed */
+}
+        
 .mines_minesGameItem__S2ytQ {
     width: 50px;
     height: 50px;
@@ -51,6 +55,12 @@ h1 {
                 inset -6px -6px 12px #38434f; /* Pressed effect */
 }
 
+.mines_minesGameItem__S2ytQ:not(.active-mine):not(.safe) {
+    font-weight: bold;
+    font-size: 1.2em; /* Increase the font size as needed */
+    /* You can adjust font size and other properties as desired */
+}
+        
 /* Improved button and input styles */
 .button_button__dZRSb {
     background: linear-gradient(145deg, #2d3b45, #20282e);
